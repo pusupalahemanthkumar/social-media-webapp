@@ -2,7 +2,7 @@
 import { createApp } from 'vue';
 
 import App from './App.vue';
-import TheSpinner from "./components/Ui/TheSpinner.vue"
+import TheSpinner from "./components/Ui/TheSpinner.vue";
 import router from "./router.js";
 import store from "./store/index.js";
 

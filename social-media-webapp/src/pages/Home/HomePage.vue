@@ -25,6 +25,9 @@ export default {
     return {
     };
   },
+  created(){
+    this.$store.dispatch('story/loadStories');
+  }
 };
 </script>
 

@@ -1,7 +1,7 @@
 <template>
      <div class="middle-container">
       <h2 class="title">Story (6 / 14)</h2>
-      <stories-list :story-list="storyList"></stories-list>
+      <stories-list :story-list="stories"></stories-list>
       <div class="header">
         <h2>Feeds (25 new)</h2>
         <div class="actions-menu-list">
@@ -59,6 +59,11 @@ export default{
       ],
     };
   },
+  computed: {
+    stories(){
+      return this.$store.getters['story/getStories'];
+    }
+  }
 
 
 }

@@ -3,20 +3,27 @@
       <div class="content-overlay"></div>
       <img
         class="content-image"
-        :src="image"
+        :src="story.data[0].image"
         :alt="'image'"
       />
       <div class="content-details fadeIn-bottom">
         <img width="48" height="48" src="https://img.icons8.com/color/48/add--v1.png" alt="add--v1" v-if="quickAdd"/>
-        <img width="48" height="48" src="https://img.icons8.com/color/48/video-stabilization.png" alt="video-stabilization" v-if="!quickAdd"/>
+        <img width="48" height="48" src="https://img.icons8.com/color/48/video-stabilization.png" alt="video-stabilization" v-if="!quickAdd" @click="clickHandler(story)"/>
       </div>
   </div>
 </template>
 
 <script>
-
 export default{
-    props: ['image', 'quickAdd']
+    props: ['story', 'quickAdd'],
+    components:{
+    },
+    methods:{
+      clickHandler(story){
+        console.log("Testing")
+        this.$emit('view-story',story);
+      }
+    }
 }
 
 </script>
