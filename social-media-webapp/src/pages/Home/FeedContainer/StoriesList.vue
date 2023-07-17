@@ -1,11 +1,8 @@
 <template>
     <carousel :items-to-show="5">
-        <slide v-for="slide in storyList" :key="slide">
-          <div class="story">
-            <img :src="slide" />
-          </div>
+        <slide v-for="(slide,index) in storyList" :key="slide">
+            <story-item :image="slide" :key="slide" :quickAdd="index==0"></story-item>
         </slide>
-
         <template #addons>
           <navigation />
         </template>
@@ -14,12 +11,14 @@
 
 <script>
 import { Carousel, Slide, Navigation } from "vue3-carousel";
+import StoryItem from "./StoryItem.vue";
 
 export default{
   components: {
     Carousel,
     Slide,
     Navigation,
+    StoryItem,
   },
   props: ['storyList'],
   data() {
@@ -34,15 +33,5 @@ export default{
 </script>
 
 <style scoped>
-.story {
-  width: 150px;
-  height: 200px;
-  background-color: #fff;
-  margin-right: 0.5rem;
-}
-.story img {
-  width: 100%;
-  height: 100%;
-}
 
 </style>

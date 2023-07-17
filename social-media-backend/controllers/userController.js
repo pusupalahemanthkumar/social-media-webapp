@@ -27,6 +27,7 @@ const authUser = asyncHandler(async (req, res, next) => {
 
 // Registration
 const registerUser = asyncHandler(async (req, res, next) => {
+  console.log("User register !!");
   const { userName, email, profileImage, dob, password } = req.body;
   const userExits = await User.findOne({ email });
 

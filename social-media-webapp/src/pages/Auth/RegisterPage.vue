@@ -4,10 +4,13 @@
       <h1 class="text-center py-1">
         <span class="primary-color">Connect</span>People
       </h1>
+      <p v-if="error" class="error-message">{{ error }}</p>
+      <the-spinner v-if="isLoading"></the-spinner>
       <form
         class="login-form"
         @submit.prevent="registerHandler"
         enctype="multipart/form-data"
+        v-else
       >
         <input
           type="text"
@@ -48,45 +51,67 @@
           v-model="password"
         />
         <button type="submit">SIGN UP</button>
+        <p class="login-bottom-text text-center py-2">
+          Already have an account?
+          <router-link to="/login" class="primary-color"> Sign in!</router-link>
+        </p>
       </form>
-      <p class="login-bottom-text text-center py-2">
-        Already have an account?
-        <router-link to="/login" class="primary-color"> Sign in!</router-link>
-      </p>
     </div>
   </div>
 </template>
 
 <script>
 export default {
+  components: {
+  },
   data() {
     return {
       userName: "",
       email: "",
-      profilePhoto: null,
+      profileImage: null,
       dob: null,
       password: "",
+      isLoading: false,
+      error: null,
     };
   },
-  methods: {
-    registerHandler() {
-      const payload = {
-        userName: this.userName,
-        email: this.email,
-        profilePhoto: this.profilePhoto,
-        dob: this.dob,
-        password: this.password,
-      };
-      console.log(payload);
+  computed: {
+    isAuthenticated() {
+      return this.$store.getters.isAuthenticated;
+    },
+  },
+  created() {
+    if (this.$store.getters.isAuthenticated) {
       this.$router.replace("/");
+    }
+  },
+  methods: {
+    async registerHandler() {
+      this.isLoading = true;
+      try {
+        const payload = {
+          userName: this.userName,
+          email: this.email,
+          profileImage: this.profileImage,
+          dob: this.dob,
+          password: this.password,
+        };
+        console.log(payload);
+        await this.$store.dispatch("register", payload);
+        this.isLoading = false;
+        this.$router.replace("/");
+      } catch (err) {
+        this.error = err.message || "Failed to authenticate, try later.";
+        this.isLoading = false;
+      }
     },
     profileUploadHandler() {
       let files = this.$refs.profile.files[0];
-      
+
       if (files) {
         const reader = new FileReader();
         reader.onload = (e) => {
-          this.profilePhoto= e.target.result;
+          this.profileImage = e.target.result;
         };
         reader.readAsDataURL(files);
       }

@@ -3,6 +3,7 @@ import express from "express";
 import colors from "colors";
 import dotenv from "dotenv";
 import path from "path";
+import cors from "cors";
 
 import connectDB from "./config/db.js";
 import { errorHandler, notFound } from "./middlewares/errorMiddleware.js";
@@ -15,6 +16,7 @@ connectDB();
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 
 // Api Routes
 app.use("/api/users", userRoutes);

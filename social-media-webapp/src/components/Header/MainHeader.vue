@@ -33,19 +33,22 @@
       </router-link>
     </div>
     <div class="header-right">
-      <div class="user-info">
+      <div class="user-info" v-if="getUser">
         <div class="avator">
-          <img src="../../assets/Images/pic.webp" />
+          <img :src="getUser.profileImage" />
         </div>
-        <span>Hemanth</span>
+        <span>{{ getUser.userName }}</span>
       </div>
       <div class="icon">
         <img src="../../assets/Images/messageIcon.png" alt="messager" />
       </div>
       <div class="icon">
-        <img src="../../assets/Images/notificationIcon.png" alt="notification" />
+        <img
+          src="../../assets/Images/notificationIcon.png"
+          alt="notification"
+        />
       </div>
-      <div class="icon">
+      <div class="icon" @click="logoutHandler">
         <img src="../../assets/Images/moreIcon.png" alt="more" />
       </div>
     </div>
@@ -53,21 +56,36 @@
 </template>
 
 <script>
-export default {};
+import { mapGetters } from "vuex";
+export default {
+  data() {
+    return {};
+  },
+  computed: {
+    ...mapGetters(["getUser"]),
+  },
+
+  methods: {
+    async logoutHandler() {
+      await this.$store.dispatch("logout");
+      this.$router.replace("/login");
+    },
+  },
+};
 </script>
 
 <style scoped>
-a{
+a {
   text-decoration: none;
 }
-.router-link-active{
-  border-bottom:  2px solid #ccc;
+.router-link-active {
+  border-bottom: 2px solid #ccc;
   transform: scale(1.3);
 }
 header {
   position: sticky;
-  top:0;
-  left:0;
+  top: 0;
+  left: 0;
   padding: 1rem 3rem;
   border-bottom: 0.5px solid #7d7b7b;
   display: flex;
@@ -124,24 +142,24 @@ header .header-left {
 .header-right .icon {
   margin: 0rem 1rem;
 }
-.header-right .user-info{
-    display: flex;
-    align-items: center;
-    margin: 0rem 2rem;
-    background-image: linear-gradient(to right, #2F3C4D , #404449);
-    padding: 0.4rem 2rem;
-    border-radius: 15px;
-    font-size: 0.9rem;
+.header-right .user-info {
+  display: flex;
+  align-items: center;
+  margin: 0rem 2rem;
+  background-image: linear-gradient(to right, #2f3c4d, #404449);
+  padding: 0.4rem 2rem;
+  border-radius: 15px;
+  font-size: 0.9rem;
 }
-.header-right .avator{
-    width: 25px;
-    height: 25px;
-    border-radius: 10px;
-    margin: 0rem 0.5rem;
+.header-right .avator {
+  width: 25px;
+  height: 25px;
+  border-radius: 10px;
+  margin: 0rem 0.5rem;
 }
-.header-right .avator img{
-    width: 100%;
-    height: 100%;
-    border-radius: 10px;
+.header-right .avator img {
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
 }
 </style>

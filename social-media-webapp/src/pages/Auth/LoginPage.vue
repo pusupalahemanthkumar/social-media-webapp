@@ -1,47 +1,81 @@
 <template>
- <div class="login-bg">
-      <div class="login-form-main-container">
-        <h1 class="text-center py-1">
-          <span class="primary-color">Connect</span>People
-        </h1>
-        <form class="login-form" @submit.prevent="loginHandler">
-          <input type="email" placeholder="Email" required name="email" v-model.trim="email" />
-          <input type="password" placeholder="Password" required name="email" v-model.trim="password" />
-          <button type="submit">SIGN IN</button>
-        </form>
+  <div class="login-bg">
+    <div class="login-form-main-container">
+      <h1 class="text-center py-1">
+        <span class="primary-color">Connect</span>People
+      </h1>
+      <p v-if="error" class="error-message">{{ error }}</p>
+      <the-spinner v-if="isLoading"></the-spinner>
+      <form class="login-form" @submit.prevent="loginHandler" v-else>
+        <input
+          type="email"
+          placeholder="Email"
+          required
+          name="email"
+          v-model.trim="email"
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          required
+          name="email"
+          v-model.trim="password"
+        />
+        <button type="submit">SIGN IN</button>
         <p class="login-bottom-text text-center py-2">
           Don't have an account ?
-          <router-link to="/register" class="primary-color"> Sign up!</router-link>
+          <router-link to="/register" class="primary-color">
+            Sign up!</router-link
+          >
         </p>
-      </div>
+      </form>
     </div>
-
+  </div>
 </template>
 
 <script>
-
-export default{
-    data(){
-        return {
-            email: '',
-            password : '',
-        }
-
+export default {
+  components: {
+  },
+  data() {
+    return {
+      email: "",
+      password: "",
+      isLoading: false,
+      error: null,
+    };
+  },
+  computed: {
+    isAuthenticated() {
+      return this.$store.getters.isAuthenticated;
     },
-    methods :{
-        loginHandler(){
-            const payload = {
-               email : this.email,
-                password :this.password
-            }
-            console.log(payload);
-            this.$router.replace("/");
-        }
+  },
+  created() {
+    if (this.$store.getters.isAuthenticated) {
+      this.$router.replace("/");
     }
-}
-
+  },
+  methods: {
+    async loginHandler() {
+      this.isLoading = true;
+      try {
+        const payload = {
+          email: this.email,
+          password: this.password,
+        };
+        console.log(payload);
+        console.log(this.$store);
+        await this.$store.dispatch("login", payload);
+        this.isLoading = false;
+        this.$router.replace("/");
+      } catch (err) {
+        this.error = err.message || "Failed to authenticate, try later.";
+        this.isLoading = false;
+      }
+    },
+  },
+};
 </script>
-
 
 <style scoped>
 .text-center {
@@ -52,6 +86,11 @@ export default{
 }
 .primary-color {
   color: rgb(48, 88, 51);
+}
+.error-message {
+  color: red;
+  text-align: center;
+  padding: 1rem 0rem;
 }
 /* Login  and Registration Styling Here */
 .login-bg {
