@@ -1,7 +1,7 @@
 <template>
   <the-model :show="showModal" @close="closeModalHandler" :styles="modalStyle">
     <Carousel :autoplay="2000" :wrap-around="true">
-      <Slide v-for="(slide,index) in  selectedStory.data" :key="slide">
+      <Slide v-for="(slide) in  selectedStory.data" :key="slide">
         <div class="carousel__item">
           <img :src="slide.image"  alt="stories" />
         </div>
@@ -13,7 +13,7 @@
     </Carousel>
   </the-model>
   <carousel :items-to-show="5">
-    <slide v-for="(slide, index) in storyList" :key="slide">
+    <slide v-for="(slide,index) in storyList" :key="slide">
       <story-item
         :story="slide"
         :key="slide.id + new Date().toISOString()"

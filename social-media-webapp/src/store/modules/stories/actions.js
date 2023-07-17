@@ -9,7 +9,7 @@ export default {
       },
     };
 
-    const { data } = await axios.get(`${BASE_URL}/`);
+    const { data } = await axios.get(`${BASE_URL}/`,config);
     context.commit('setStories',data);
   },
 };
