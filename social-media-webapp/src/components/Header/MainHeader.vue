@@ -1,7 +1,7 @@
 <template>
   <header>
     <div class="header-left">
-      <div class="logo" to="/">
+      <div class="logo" to="/home">
         <img src="../../assets/Images/mainLogo.png" alt="faceBook" />
       </div>
       <div class="v-line"></div>
@@ -19,7 +19,7 @@
       </div>
     </div>
     <div class="header-middle">
-      <router-link class="icon" to="/">
+      <router-link class="icon" to="/home">
         <img src="../../assets/Images/homeIcon.png" alt="Home" />
       </router-link>
       <router-link class="icon" to="/reels">

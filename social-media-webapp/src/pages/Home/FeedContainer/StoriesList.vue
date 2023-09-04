@@ -1,5 +1,5 @@
 <template>
-  <the-model :show="showModal" @close="closeModalHandler" :styles="modalStyle">
+  <the-model :show="isStoriesVisible" @close="closeStoryModalHandler" :styles="modalStyle">
     <Carousel :autoplay="2000" :wrap-around="true">
       <Slide v-for="(slide) in  selectedStory.data" :key="slide">
         <div class="carousel__item">
@@ -12,6 +12,9 @@
       </template>
     </Carousel>
   </the-model>
+  <the-model :show="isQuickAddVisible" @close="closeQuickAddModalHandler" :styles="{ height: 'auto'}" >
+   <quick-story-add></quick-story-add>
+  </the-model>
   <carousel :items-to-show="5">
     <slide v-for="(slide,index) in storyList" :key="slide">
       <story-item
@@ -19,6 +22,7 @@
         :key="slide.id + new Date().toISOString()"
         :quickAdd="index == 0"
         @view-story="viewStoryHandler"
+        @add-story="openQuickAddModalHandler"
       ></story-item>
     </slide>
     <template #addons>
@@ -31,6 +35,7 @@
 import { Carousel, Slide, Navigation, Pagination } from "vue3-carousel";
 import StoryItem from "./StoryItem.vue";
 import TheModel from "@/components/Ui/TheModel.vue";
+import QuickStoryAdd from "./QuickStoryAdd.vue";
 
 export default {
   components: {
@@ -41,11 +46,13 @@ export default {
     
     StoryItem,
     TheModel,
+    QuickStoryAdd
   },
   props: ["storyList"],
   data() {
     return {
-      showModal: false,
+      isStoriesVisible: false,
+      isQuickAddVisible: false,
       modalStyle: {
         top: "10vh",
         left: "35%",
@@ -56,17 +63,25 @@ export default {
     };
   },
   methods: {
-    openModalHandler() {
-      this.showModal = true;
+    openStoryModalHandler() {
+      this.isStoriesVisible = true;
     },
-    closeModalHandler() {
-      this.showModal = false;
+    openQuickAddModalHandler(){
+      this.isQuickAddVisible = true;
+    },
+    closeQuickAddModalHandler(){
+      this.isQuickAddVisible = false;
+    },
+    closeStoryModalHandler() {
+      this.isStoriesVisible = false;
     },
     viewStoryHandler(data) {
-      this.openModalHandler();
+      this.openStoryModalHandler();
       console.log(data);
       this.selectedStory = data;
     },
+    quickStoryAddHandler(){
+    }
   },
 };
 </script>

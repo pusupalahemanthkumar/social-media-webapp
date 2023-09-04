@@ -7,7 +7,7 @@
         :alt="'image'"
       />
       <div class="content-details fadeIn-bottom">
-        <img width="48" height="48" src="https://img.icons8.com/color/48/add--v1.png" alt="add--v1" v-if="quickAdd"/>
+        <img width="48" height="48" src="https://img.icons8.com/color/48/add--v1.png" alt="add--v1" v-if="quickAdd" @click="addStory"/>
         <img width="48" height="48" src="https://img.icons8.com/color/48/video-stabilization.png" alt="video-stabilization" v-if="!quickAdd" @click="clickHandler(story)"/>
       </div>
   </div>
@@ -16,12 +16,16 @@
 <script>
 export default{
     props: ['story', 'quickAdd'],
+    emits: ['view-story','add-story'],
     components:{
     },
     methods:{
       clickHandler(story){
         console.log("Testing")
         this.$emit('view-story',story);
+      },
+      addStory(){
+        this.$emit('add-story');
       }
     }
 }
